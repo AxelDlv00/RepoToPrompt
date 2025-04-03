@@ -53,14 +53,26 @@ conda activate repotoprompt
 
 ### 3. (Optional) Add the Script to Your PATH
 
-If you use **bash**:
+You can run `RepoToPrompt.py` from anywhere by **adding it to your shell's PATH**.
+
+> ***Remark:***
+> *`PATH` is an environment variable that tells your terminal where to look for executable programs.*
+> *When you type `python` or `RepoToPrompt`, your shell checks the directories listed in `PATH` **in order**, looking for an executable with that name.*
+
+**Choose based on your shell:**
+- `Zsh` (default on macOS) → `~/.zshrc`
+- `Bash` (older systems or Linux) → `~/.bashrc` or `~/.bash_profile`
 
 ```bash
-echo "export PATH=\"$(pwd):\$PATH\"" >> ~/.bashrc
-source ~/.bashrc
+chmod +x 'RepoToPrompt.py' 
+echo 'export PATH="$PATH:'"$(pwd)"'"' >> ~/.zshrc  # or ~/.bashrc
+echo 'alias RepoToPrompt="RepoToPrompt.py"' >> ~/.zshrc # or ~/.bashrc 
+source ~/.zshrc  # or source ~/.bashrc
 ```
 
-Now you can call `RepoToPrompt.py` from anywhere.
+Now you can call `RepoToPrompt` from anywhere.
+
+Test it with `RepoToPrompt --help`.
 
 ---
 
@@ -160,4 +172,4 @@ This project reuses logic and structure from [gpt-repository-loader](https://git
 
 --- 
 
-- Last update : March 2025
+- Last update : April 2025
