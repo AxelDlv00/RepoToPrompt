@@ -36,7 +36,7 @@ def main():
         sys.exit(0)
 
     im.load_patterns()
-    processor = RepoProcessor(args.path, im, {'skip_binary': True})
+    processor = RepoProcessor(args.path, im, display, {'skip_binary': True})
     
     try:
         with open(args.output, "w", encoding="utf-8") as f:

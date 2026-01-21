@@ -1,6 +1,8 @@
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
+from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn
+
 
 class Display:
     def __init__(self):
@@ -40,3 +42,15 @@ class Display:
     def success(self, msg): self.console.print(f"[bold green]✔[/bold green] {msg}")
     def info(self, msg): self.console.print(f"[bold blue]ℹ[/bold blue] {msg}")
     def error(self, msg): self.console.print(f"[bold red]✘ ERROR:[/bold red] {msg}")
+    def warning(self, msg): self.console.print(f"[bold yellow]⚠ WARNING:[/bold yellow] {msg}")
+
+    def progress_context(self):
+        """Returns a configured Progress context manager."""
+        return Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            BarColumn(),
+            TaskProgressColumn(),
+            console=self.console,
+            transient=False
+        )
