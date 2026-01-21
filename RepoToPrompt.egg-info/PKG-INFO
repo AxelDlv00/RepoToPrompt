@@ -1,0 +1,8 @@
+Metadata-Version: 2.4
+Name: RepoToPrompt
+Version: 1.0.0
+Summary: Convert a repository to a single prompt-friendly text file.
+Requires-Python: >=3.8
+License-File: LICENSE
+Requires-Dist: rich>=12.0.0
+Dynamic: license-file

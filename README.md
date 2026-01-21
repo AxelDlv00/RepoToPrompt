@@ -15,161 +15,111 @@
 
 ## Overview
 
-**RepoToPrompt** is a tool that converts a repository into a single, structured plain-text document. It allows fine-grained filtering of included files and formatting to suit AI prompting, auditing, and archival needs.
-
-> Inspired by [gpt-repository-loader](https://github.com/mpoon/gpt-repository-loader), and partially restructured to support more flexible extension control, binary skipping, and notebook image filtering, which substantially impact the quality of LLM's answers.
-
----
-
-## Features
-
-- Filter files by **include/exclude extensions**
-- Ignore files using a **`.RepoToPromptignore`** (similar to `.gitignore`)
-- Automatically **strip base64 image blobs** from Jupyter Notebooks
-- Automatically **skip binary files** and large files
-- Configurable **output preamble** and file format
+**RepoToPrompt** is a CLI tool that converts a local repository into a single, structured plain-text document optimized for AI context windows. It automatically handles binary file skipping and Jupyter Notebook cleaning to provide high-quality prompts.
 
 ---
 
 ## Installation
 
 ### 1. Clone the repository
-
 ```bash
 git clone https://github.com/AxelDlv00/RepoToPrompt.git
 cd RepoToPrompt
 ```
 
-### 2. Requirements
+### 2. Install as a package
 
-RepoToPrompt only requires **Python 3**.  
-You can install Python from your system’s package manager or from [Python.org](https://www.python.org/) directly.  
-Alternatively, you can use a conda environment, e.g.:
+Use the editable mode to install the `RepoToPrompt` command globally in your environment:
 
 ```bash
-conda create -n repotoprompt python=3.9
-conda activate repotoprompt
+pip install -e .
 ```
 
-### 3. (Optional) Add the Script to Your PATH
-
-You can run `RepoToPrompt.py` from anywhere by **adding it to your shell's PATH**.
-
-> ***Remark:***
-> *`PATH` is an environment variable that tells your terminal where to look for executable programs.*
-> *When you type `python` or `RepoToPrompt`, your shell checks the directories listed in `PATH` **in order**, looking for an executable with that name.*
-
-**Choose based on your shell:**
-- `Zsh` (default on macOS) → `~/.zshrc`
-- `Bash` (older systems or Linux) → `~/.bashrc` or `~/.bash_profile`
-
-```bash
-chmod +x 'RepoToPrompt.py' 
-echo 'export PATH="$PATH:'"$(pwd)"'"' >> ~/.zshrc  # or ~/.bashrc
-echo 'alias RepoToPrompt="RepoToPrompt.py"' >> ~/.zshrc # or ~/.bashrc 
-source ~/.zshrc  # or source ~/.bashrc
-```
-
-Now you can call `RepoToPrompt` from anywhere.
-
-Test it with `RepoToPrompt --help`.
+*Note: This will automatically install dependencies like `rich`.*
 
 ---
 
 ## Usage
 
+### Initialize Ignore File
+
+Generate a default ignore file populated with common patterns (logs, binaries, etc.):
+
 ```bash
-python RepoToPrompt.py /path/to/repo \
-  [--preamble preamble.txt] \
-  [--output output.txt] \
-  [--include-extensions .py,.ipynb] \
-  [--exclude-extensions .jpg,.png] \
-  [--max-file-size 100000] \
-  [--skip-binary] \
-  [--strip-notebook-images]
+RepoToPrompt --init-ignore
 ```
 
-Parameters:
+Or manually create a `.RepoToPromptignore` file in your repository root.
 
-- `repo_path`: Path to the repository you want to convert.
-- `--preamble`: Path to a text file whose content will be prepended to the output.
-- `--output`: Output file path (default: `output.txt`).
-- `--include-extensions`: Comma-separated list of file extensions to include (e.g., `.py,.md`).
-- `--exclude-extensions`: Comma-separated list of file extensions to exclude (e.g., `.jpg,.png`).
-- `--max-file-size`: Skip files larger than this size (in bytes).
-- `--skip-binary`: Skip files that appear to be binary.
-- `--strip-notebook-images`: Remove base64 images from Jupyter notebooks.
+*Use `--force` to overwrite an existing ignore file.*
+
+### Convert a Repository
+
+```bash
+RepoToPrompt [path/to/repo] [options]
+```
+
+**Options:**
+
+* `path`: Path to the repository (default is current directory `.`).
+* `-o, --output`: Name of the output text file (default: `output.txt`).
+* `--init-ignore`: Create the default `.RepoToPromptignore` file.
+* `--force`: Force overwrite of the ignore file during initialization.
+* `-h, --help`: Show the styled help page.
 
 ### Example
 
 ```bash
-python RepoToPrompt.py ./my_repo \
-  --preamble my_preamble.txt \
-  --output consolidated_repo.txt \
-  --include-extensions .py,.ipynb \
-  --exclude-extensions .png,.jpg \
-  --max-file-size 100000 \
-  --skip-binary \
-  --strip-notebook-images
-```
-
----
-
-## Output Format
-
-```
-----
-relative/path/to/file.ext
-<file contents>
-----
-relative/path/to/another_file.ext
-<file contents>
---END--
-<Instructions or additional text beyond this point>
+RepoToPrompt ./my-project -o my_prompt.txt
 ```
 
 ---
 
 ## .RepoToPromptignore
 
-A simple ignore file that works like `.gitignore`. Example content:
+Place this file in your root directory to exclude specific files or folders. Example:
 
-```
-*.log
-__pycache__/
-data/
+```text
+# Folders
+.git/
+node_modules/
+venv/
+
+# Files
 *.png
-*.jpg
 *.pdf
-*.aux
-*.bbl
-*.fdb_latexmk
-*.fls
-*.log
-*.out
-*.synctex.gz
-*.toc
-*.DS_Store
-*.git*
-*.txt
+secret.env
 ```
 
-Place it in the root of the repo (or next to the script) to filter out files or folders you don’t want included.
+---
+
+## Output Format
+
+The generated file follows a structured format that LLMs easily understand:
+
+```text
+The following text is a repository with code...
+----
+relative/path/to/file.py
+<file contents>
+----
+relative/path/to/script.js
+<file contents>
+--END--
+```
 
 ---
 
 ## License
 
-MIT License — see [LICENSE](LICENSE).
-
-This project reuses logic and structure from [gpt-repository-loader](https://github.com/mpoon/gpt-repository-loader).
+MIT License — see [LICENSE](https://www.google.com/search?q=LICENSE).
 
 ---
 
 ## Author
 
-- Axel Delaval
+* **Axel Delaval** - [AxelDlv00](https://github.com/AxelDlv00)
 
---- 
+---
 
-- Last update : April 2025
+* Last update : January 2026
