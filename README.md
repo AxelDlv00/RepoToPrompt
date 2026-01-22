@@ -65,6 +65,7 @@ RepoToPrompt [path/to/repo] [options]
 * `-o, --output`: Name of the output text file (default: `output.txt`).
 * `--init-ignore`: Create the default `.RepoToPromptignore` file.
 * `--force`: Force overwrite of the ignore file during initialization.
+* `--max-size`: Max file size in KB to include (e.g., 100).
 * `-h, --help`: Show the styled help page.
 
 ### Example

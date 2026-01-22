@@ -13,6 +13,7 @@ def main():
     parser.add_argument("--init-ignore", action="store_true")
     parser.add_argument("--force", action="store_true")
     parser.add_argument("-o", "--output", default="output.txt")
+    parser.add_argument("--max-size", type=int, help="Max file size in KB to include (e.g., 100).")
     parser.add_argument("-h", "--help", action="store_true")
     
     args = parser.parse_args()
@@ -36,7 +37,7 @@ def main():
         sys.exit(0)
 
     im.load_patterns()
-    processor = RepoProcessor(args.path, im, display, {'skip_binary': True})
+    processor = RepoProcessor(args.path, im, display, {'skip_binary': True, 'max_size': args.max_size})
     
     try:
         with open(args.output, "w", encoding="utf-8") as f:

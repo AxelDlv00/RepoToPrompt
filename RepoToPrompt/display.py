@@ -28,6 +28,7 @@ class Display:
         table.add_row("--init-ignore", "Initialize a default .RepoToPromptignore file.")
         table.add_row("--force", "Overwrite existing ignore file with --init-ignore.")
         table.add_row("-o, --output", "Output filename (default: output.txt).")
+        table.add_row("--max-size", "Max file size in KB to include.")
         table.add_row("-h, --help", "Show this styled help page.")
         
         self.console.print(table)

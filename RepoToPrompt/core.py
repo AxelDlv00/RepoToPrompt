@@ -58,9 +58,17 @@ class RepoProcessor:
                     continue
 
                 file_size = os.path.getsize(full_path)
-                if file_size > self.size_threshold:
-                    size_kb = round(file_size / 1024, 2)
-                    self.display.warning(f"{rel_path} is large ({size_kb} KB)")
+                max_size_kb = self.options.get('max_size')
+                if max_size_kb is not None:
+                    if file_size > (max_size_kb * 1024):
+                        self.display.warning(f"Skipping {rel_path}: size {round(file_size/1024, 1)}KB exceeds limit ({max_size_kb}KB)")
+                        self.stats["ignored"] += 1
+                        progress.advance(task)
+                        continue
+                else:
+                    if file_size > self.size_threshold:
+                        size_kb = round(file_size / 1024, 2)
+                        self.display.warning(f"{rel_path} is large ({size_kb} KB)")
 
                 try:
                     with open(full_path, 'r', encoding='utf-8', errors='ignore') as f:
